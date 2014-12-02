@@ -1,0 +1,121 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.pampanet</groupId>
+  <artifactId>sample</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Sample Shiro + Guice + RestEasy WebApp</name>
+  <url>http://github.com/pabiagioli/shiro-guice-async-webapp</url>
+  <description>Maven Archetype for building Secure RESTful Web Services Archetype with Apache Shiro 1.2.3, RestEasy 3 and Google Guice 3.0</description>
+  <scm>
+    <connection>scm:git:git@github.com:pabiagioli/shiro-guice-async-webapp.git</connection>
+    <developerConnection>scm:git:git@github.com:pabiagioli/shiro-guice-async-webapp.git</developerConnection>
+    <url>scm:git:git@github.com:pabiagioli/shiro-guice-async-webapp.git</url>
+    <tag>shiro-guice-async-webapp-0.0.1</tag>
+  </scm>
+  <developers>
+    <developer>
+      <name>Pablo Biagioli</name>
+      <email>pabiagioli@gmail.com</email>
+      <organization>PampaNet</organization>
+      <url>http://github.com/pabiagioli</url>
+    </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>GNU General Public License (GPL)</name>
+      <url>http://www.gnu.org/licenses/gpl.txt</url>
+    </license>
+  </licenses>  
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<timestamp>${maven.build.timestamp}</timestamp>
+		<maven.build.timestamp.format>yyyy-MM-dd HH:mm</maven.build.timestamp.format>
+
+		<!-- deploying for localhost development -->
+		<version.resteasy>3.0.9.Final</version.resteasy>
+		<!-- SAL Core jar version -->
+		<version.junit>4.10</version.junit>
+		<version.guice>3.0</version.guice>
+		<version.servlet>3.0</version.servlet>
+		<version.shiro>1.2.3</version.shiro>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.6.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>${version.shiro}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-guice</artifactId>
+			<version>${version.shiro}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>${version.resteasy}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-guice</artifactId>
+			<version>${version.resteasy}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>async-http-servlet-3.0</artifactId>
+			<version>${version.resteasy}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>${version.guice}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<!-- or whatever version you use -->
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<!-- Jetty < 9 is in org.mortbay.jetty groupId -->
+				<groupId>org.mortbay.jetty</groupId>
+				<version>8.1.9.v20130131</version>
+				<!-- Starting from Jetty 9 groupId is org.eclipse.jetty already -->
+				<!-- <groupId>org.eclipse.jetty</groupId> -->
+				<!-- Change to latest version available from http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.eclipse.jetty%22%20AND%20a%3A%22jetty-maven-plugin%22 -->
+				<!-- <version>9.x.y.z</version> -->
+				<artifactId>jetty-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>
