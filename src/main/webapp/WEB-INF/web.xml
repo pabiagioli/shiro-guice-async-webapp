@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
-<display-name>sample Project</display-name>
+<display-name>Secure Async Webapp Project</display-name>
   <filter>
     <filter-name>shiroFilter</filter-name>
     <filter-class>com.pampanet.sample.servlet.filter.GuiceRestEasyShiroFilter</filter-class>
