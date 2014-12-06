@@ -13,6 +13,7 @@ Dependencies included
 - gson 2.2.4
 - joda-time 2.4
 - JUnit 4.10
+- Jukito 1.4
 
 Requirements
 ------------
