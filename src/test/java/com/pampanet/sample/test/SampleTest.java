@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import com.google.inject.Inject;
@@ -37,7 +38,6 @@ public class SampleTest extends AbstractShiroUnitTest{
 	@Inject
 	Subject subjectUnderTest;
 	@Spy
-	@Inject
 	SampleSecuredAsyncWS sampleAsyncWs;
 	
 	/**
@@ -82,7 +82,7 @@ public class SampleTest extends AbstractShiroUnitTest{
 	@Test
 	public void testShiroAsyncSample(AsyncResponse asyncRes) throws Exception{
 		
-		//SampleSecuredAsyncWS asyncWs = Mockito.spy(new SampleSecuredAsyncWS());
+		SampleSecuredAsyncWS sampleAsyncWs = Mockito.spy(new SampleSecuredAsyncWS());
 		
 		//WHEN
 		sampleAsyncWs.sayHelloToUser(asyncRes);
