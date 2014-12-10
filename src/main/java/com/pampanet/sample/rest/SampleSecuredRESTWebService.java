@@ -53,7 +53,7 @@ public class SampleSecuredRESTWebService {
 	@RequiresPermissions("forbiddenForAllExceptRoot")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response forbiddenToAll(){
-		return Response.ok("Got Root!").build();
+		return Response.ok("Got "+SecurityUtils.getSubject().getPrincipal()+"!").build();
 	}
 
 	public HttpServletRequest getRequest() {

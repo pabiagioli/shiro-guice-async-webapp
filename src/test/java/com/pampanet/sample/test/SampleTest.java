@@ -1,11 +1,13 @@
 package com.pampanet.sample.test;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Response;
 
+import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.subject.Subject;
 import org.jukito.JukitoRunner;
 import org.junit.After;
@@ -36,7 +38,8 @@ public class SampleTest extends AbstractShiroUnitTest{
 	@Inject
 	SampleSecuredRESTWebService sampleService;
 	@Inject
-	Subject subjectUnderTest;
+	Subject nonRootSubject;
+	
 	@Spy
 	SampleSecuredAsyncWS sampleAsyncWs;
 	
@@ -61,10 +64,10 @@ public class SampleTest extends AbstractShiroUnitTest{
         //subjectUnderTest = new Subject.Builder(getSecurityManager()).principals(new SimplePrincipalCollection("lonestarr", IniSecurityManagerFactory.INI_REALM_NAME)).authenticated(true).buildSubject();
 		
 		//1.b (Unit Test) Mock the Subject:
-		when(subjectUnderTest.getPrincipal()).thenReturn("lonestarr");
-        
+		when(nonRootSubject.getPrincipal()).thenReturn("lonestarr");
+		doThrow(AuthorizationException.class).when(nonRootSubject).checkPermission("forbiddenForAllExceptRoot");
 		//2. Bind the subject to the current thread:
-        setSubject(subjectUnderTest);
+        setSubject(nonRootSubject);
 	}
 	
 	@Test
@@ -74,7 +77,7 @@ public class SampleTest extends AbstractShiroUnitTest{
         
         //THEN
         //Verify that getPrincipal() method was called under the mocked subject
-        verify(subjectUnderTest).getPrincipal();
+        verify(nonRootSubject).getPrincipal();
         //assert the response had a 200 OK status
         Assert.assertTrue(response.getStatus() == 200);
 	}
@@ -89,7 +92,13 @@ public class SampleTest extends AbstractShiroUnitTest{
         
 		//THEN
         //Verify that getPrincipal() method was called under the mocked subject
-        verify(subjectUnderTest).getPrincipal();
+        verify(nonRootSubject).getPrincipal();
+	}
+	
+	@Test(expected=AuthorizationException.class)
+	public void shouldGiveUnauthorizedEx() throws Exception{
+		//Assert.assertTrue(subjectUnderTest.isPermitted("lightsaber:allowed"));
+		nonRootSubject.checkPermission("forbiddenForAllExceptRoot");
 	}
 	
 	@After
