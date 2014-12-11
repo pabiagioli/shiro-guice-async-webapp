@@ -56,7 +56,6 @@
 
 		<!-- deploying for localhost development -->
 		<version.resteasy>3.0.9.Final</version.resteasy>
-		<!-- SAL Core jar version -->
 		<version.junit>4.10</version.junit>
 		<version.guice>3.0</version.guice>
 		<version.servlet>3.1</version.servlet>
