@@ -12,8 +12,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.jboss.resteasy.plugins.guice.RequestScoped;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -22,7 +22,7 @@ import com.google.inject.name.Named;
 @Path("/rest/async")
 public class SampleSecuredAsyncWS {
 	
-	private Logger logger = LoggerFactory.getLogger(SampleSecuredAsyncWS.class);
+	private XLogger logger = XLoggerFactory.getXLogger(SampleSecuredAsyncWS.class);
 	
 	@Inject
 	@Named("hello.world.string")
@@ -36,11 +36,13 @@ public class SampleSecuredAsyncWS {
 		Thread t = new Thread() {
 			@Override
 			public void run() {
+				logger.entry();
 				try {
 					response.resume(Response.ok(helloWorldString).type(MediaType.APPLICATION_JSON).build());
 				} catch (Exception e) {
 					logger.error(e.getMessage(), e);
 				}
+				logger.exit();
 			}
 		};
 		t.start();
@@ -56,8 +58,10 @@ public class SampleSecuredAsyncWS {
 		Thread t = new Thread(){
 			@Override
 			public void run() {
+				logger.entry();
 				super.run();
 				response.resume(Response.ok("Hello "+SecurityUtils.getSubject().getPrincipal()+"!").build());
+				logger.exit();
 			}
 		};
 		t.start();
@@ -72,8 +76,10 @@ public class SampleSecuredAsyncWS {
 		Thread t = new Thread(){
 			@Override
 			public void run() {
+				logger.entry();
 				super.run();
 				response.resume(Response.ok("Got "+SecurityUtils.getSubject().getPrincipal()+"!").build());
+				logger.exit();
 			}
 		};
 		t.start();

@@ -5,7 +5,7 @@ RESTful Web Services using Apache Shiro 1.2.3, JBoss RestEasy 3 and Google Guice
 
 Dependencies included
 ---------------------
-- Servlet 3.x
+- Servlet 3.1.0
 - JBoss RestEasy 3.0.9.Final
 - Guice 3.0
 - Apache Shiro 1.2.3
@@ -14,6 +14,7 @@ Dependencies included
 - joda-time 2.4
 - JUnit 4.10
 - Jukito 1.4
+- Logback + SLF4J XLogger
 
 Requirements
 ------------

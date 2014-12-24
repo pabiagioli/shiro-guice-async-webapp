@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.name.Names;
 import com.pampanet.sample.servlet.config.GenericBootstrapConstants;
@@ -18,18 +21,24 @@ import com.pampanet.sample.servlet.config.GenericBootstrapConstants;
  */
 public class BootstrapPropertiesModule extends AbstractModule{
 
+	private XLogger logger = XLoggerFactory.getXLogger(this.getClass());
+	
 	@Override
 	protected void configure() {
+		logger.entry();
 		Properties bootstrapProperties = new Properties();
 		try {
 			InputStream is = getClass().getResourceAsStream("/"+GenericBootstrapConstants.BOOTSTRAP_PROPERTIES_FILE);
 			bootstrapProperties.load(is);
 			Names.bindProperties(binder(), bootstrapProperties);
 		} catch (FileNotFoundException e) {
-	        System.out.println("The configuration file "+ GenericBootstrapConstants.BOOTSTRAP_PROPERTIES_FILE + " can not be found");
+	        logger.error("The configuration file "+ GenericBootstrapConstants.BOOTSTRAP_PROPERTIES_FILE + " can not be found");
+	        logger.throwing(e);
 	    } catch (IOException e) {
-	        System.out.println("I/O Exception during loading configuration");
+	        logger.error("I/O Exception during loading configuration");
+	        logger.throwing(e);
 	    }
+		logger.exit();
 	}
 
 }

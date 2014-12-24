@@ -13,7 +13,10 @@ import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 
 import com.google.inject.Inject;
+
 import org.jboss.resteasy.plugins.guice.RequestScoped;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 /**
  * Sample Secured RESTful Web Service<br>
@@ -29,14 +32,17 @@ import org.jboss.resteasy.plugins.guice.RequestScoped;
 @Path("/rest/stuff")
 public class SampleSecuredRESTWebService {
 
+	private final XLogger logger = XLoggerFactory.getXLogger(getClass());
 	
 	private final HttpServletRequest request;
 	private final HttpServletResponse response;
 	
 	@Inject
 	public SampleSecuredRESTWebService(HttpServletRequest request, HttpServletResponse response) {
+		logger.entry();
 		this.request = request;
 		this.response = response;
+		logger.exit();
 	}
 	
 	@GET
@@ -45,7 +51,10 @@ public class SampleSecuredRESTWebService {
 	@RequiresAuthentication
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response sayHelloToUser(){
-		return Response.ok("Hello "+SecurityUtils.getSubject().getPrincipal()+"!").build();
+		logger.entry();
+		Response result = Response.ok("Hello "+SecurityUtils.getSubject().getPrincipal()+"!").build();
+		logger.exit(result);
+		return result;
 	}
 	
 	@GET
@@ -53,7 +62,10 @@ public class SampleSecuredRESTWebService {
 	@RequiresPermissions("forbiddenForAllExceptRoot")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response forbiddenToAll(){
-		return Response.ok("Got "+SecurityUtils.getSubject().getPrincipal()+"!").build();
+		logger.entry();
+		Response result = Response.ok("Got "+SecurityUtils.getSubject().getPrincipal()+"!").build();
+		logger.exit(result);
+		return result;
 	}
 
 	public HttpServletRequest getRequest() {

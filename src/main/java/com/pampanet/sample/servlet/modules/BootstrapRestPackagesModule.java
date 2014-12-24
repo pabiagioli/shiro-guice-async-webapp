@@ -10,39 +10,45 @@ import java.util.List;
 import javax.ws.rs.Path;
 import javax.ws.rs.ext.Provider;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.ext.XLogger;
+import org.slf4j.ext.XLoggerFactory;
 
 import com.google.inject.AbstractModule;
 import com.pampanet.sample.servlet.config.GenericBootstrapConstants;
-
+/**
+ * This Module binds all the classes under the declared packages 
+ * @author pablo.biagioli
+ *
+ */
 public class BootstrapRestPackagesModule extends AbstractModule{
 
-	private static final Logger log = LoggerFactory.getLogger(BootstrapRestPackagesModule.class);
+	private static final XLogger logger = XLoggerFactory.getXLogger(BootstrapRestPackagesModule.class);
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	protected void configure() {
+		logger.entry();
 		String[] pkgs = GenericBootstrapConstants.REST_EASY_REST_PACKAGES.split(",");
 		
 		for(String pkg:pkgs){
-			if(pkg.trim().endsWith(GenericBootstrapConstants.REST_EASY_REST_PACKAGES_SUFFIX)){
-				log.info("found RESTful package: {}",pkg.trim());
+			//if(pkg.trim().endsWith(GenericBootstrapConstants.REST_EASY_REST_PACKAGES_SUFFIX)){
+				logger.info("found RESTful package: {}",pkg.trim());
 				Class[] lst = null;
 				try {
 					lst = getClasses(pkg.trim());
 				} catch (ClassNotFoundException | IOException e) {
-					log.error("{}, {}", e.getClass().getName() ,e.getMessage());
+					logger.error("{}, {}", e.getClass().getName() ,e.getMessage());
 					e.printStackTrace();
 				}
 				for (Class c: lst){
 					if(c.isAnnotationPresent(Path.class) || c.isAnnotationPresent(Provider.class)){
-						log.info("found RestEasy Resource: {}",c.getName());
+						logger.info("found RestEasy Resource: {}",c.getName());
 						bind(c);
 					}
 				}
-			}
+			//}
 		}
+		logger.exit();
 	}
 
 	/**
@@ -55,6 +61,8 @@ public class BootstrapRestPackagesModule extends AbstractModule{
 	 */
 	@SuppressWarnings({ "rawtypes" })
 	private static Class[] getClasses(String packageName) throws ClassNotFoundException, IOException {
+		Class[] result = null;
+		logger.entry();
 		ClassLoader classLoader = Thread.currentThread()
 				.getContextClassLoader();
 		assert classLoader != null;
@@ -69,7 +77,9 @@ public class BootstrapRestPackagesModule extends AbstractModule{
 		for (File directory : dirs) {
 			classes.addAll(findClasses(directory, packageName));
 		}
-		return classes.toArray(new Class[classes.size()]);
+		result = classes.toArray(new Class[classes.size()]);
+		logger.exit(result);
+		return result;
 	}
 
 	/**
@@ -83,6 +93,7 @@ public class BootstrapRestPackagesModule extends AbstractModule{
 	@SuppressWarnings("rawtypes")
 	private static List<Class> findClasses(File directory, String packageName)
 			throws ClassNotFoundException {
+		logger.entry();
 		List<Class> classes = new ArrayList<Class>();
 		if (!directory.exists()) {
 			return classes;
@@ -100,6 +111,7 @@ public class BootstrapRestPackagesModule extends AbstractModule{
 								file.getName().length() - 6)));
 			}
 		}
+		logger.exit(classes);
 		return classes;
 	}
 	
