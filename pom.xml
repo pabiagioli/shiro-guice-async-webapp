@@ -161,13 +161,25 @@
 					<webApp>
 					<contextPath>/${project.artifactId}</contextPath>
 					</webApp>
-					<!-- <systemProperties>
+					<systemProperties>
 						<systemProperty>
 							<name>logback.configurationFile</name>
-							<value>${project.build.directory}/logback.xml</value>
+							<value>${project.build.outputDirectory}/logback.xml</value>
 						</systemProperty>
-					</systemProperties> -->
+					</systemProperties>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>ch.qos.logback</groupId>
+						<artifactId>logback-classic</artifactId>
+						<version>${version.logback}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+						<version>${version.slf4j}</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
