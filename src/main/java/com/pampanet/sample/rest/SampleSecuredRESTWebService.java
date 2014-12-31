@@ -51,7 +51,7 @@ public class SampleSecuredRESTWebService {
 	@RequiresAuthentication
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response sayHelloToUser(){
-		logger.entry();
+		logger.entry(getRequest(), getResponse());
 		Response result = Response.ok("Hello "+SecurityUtils.getSubject().getPrincipal()+"!").build();
 		logger.exit(result);
 		return result;
@@ -62,7 +62,7 @@ public class SampleSecuredRESTWebService {
 	@RequiresPermissions("forbiddenForAllExceptRoot")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response forbiddenToAll(){
-		logger.entry();
+		logger.entry(getRequest(), getResponse());
 		Response result = Response.ok("Got "+SecurityUtils.getSubject().getPrincipal()+"!").build();
 		logger.exit(result);
 		return result;

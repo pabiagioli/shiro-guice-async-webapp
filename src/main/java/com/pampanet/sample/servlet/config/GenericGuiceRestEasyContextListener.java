@@ -1,12 +1,8 @@
 package com.pampanet.sample.servlet.config;
 
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
@@ -32,33 +28,27 @@ public class GenericGuiceRestEasyContextListener extends GuiceResteasyBootstrapS
 	
 	@Override
 	protected List<? extends Module> getModules(ServletContext context) {
-		logger.entry();
+		logger.entry(context);
 		return Arrays.asList(new BootstrapPropertiesModule(), new RequestScopeModule(), new BootstrapShiroModule(context), new ShiroAnnotationsModule(),new BootstrapRestPackagesModule());
 	}
 	
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		logger.entry();
+		logger.entry(event);
 		context = event.getServletContext();
 		super.contextInitialized(event);
-		logger.exit();
+		logger.exit(event);
 	}
 	
 	@Override
 	protected void withInjector(Injector injector) {
-		logger.entry();
+		logger.entry(injector);
 		super.withInjector(injector);
 		context.setAttribute(INJECTOR_NAME, injector);
-		
-		//LinkedList<Class<? extends Filter>> filterChain = new LinkedList<Class<? extends Filter>>();
-		//filterChain.add(GuiceRestEasyShiroFilter.class);
-		//filterChain.add(GuiceRestEasyFilterDispatcher.class);
-		
-		//setUpFilters(filterChain);
-		logger.exit();
+		logger.exit(injector);
 	}
 	
-	@SuppressWarnings("unused")
+	/*@SuppressWarnings("unused")
 	private void setUpFilters(List<Class<? extends Filter>> fList){
 		logger.entry();
 		for(Class<? extends Filter> f: fList){
@@ -71,6 +61,6 @@ public class GenericGuiceRestEasyContextListener extends GuiceResteasyBootstrapS
 			
 		}
 		logger.exit();
-	}
+	}*/
 	
 }

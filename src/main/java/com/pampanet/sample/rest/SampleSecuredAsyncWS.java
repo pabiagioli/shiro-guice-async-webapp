@@ -37,11 +37,8 @@ public class SampleSecuredAsyncWS {
 			@Override
 			public void run() {
 				logger.entry();
-				try {
-					response.resume(Response.ok(helloWorldString).type(MediaType.APPLICATION_JSON).build());
-				} catch (Exception e) {
-					logger.error(e.getMessage(), e);
-				}
+				super.run();
+				response.resume(Response.ok(helloWorldString).type(MediaType.APPLICATION_JSON).build());
 				logger.exit();
 			}
 		};

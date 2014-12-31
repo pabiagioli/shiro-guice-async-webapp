@@ -1,28 +1,25 @@
-package com.pampanet.sample.test;
+package com.pampanet.sample.test.rest;
 
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.core.Response;
 
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.subject.Subject;
 import org.jukito.JukitoRunner;
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.mockito.Spy;
 
 import com.google.inject.Inject;
 import com.pampanet.sample.rest.SampleSecuredAsyncWS;
 import com.pampanet.sample.rest.SampleSecuredRESTWebService;
-import com.pampanet.sample.test.common.AbstractShiroUnitTest;
+import com.pampanet.sample.test.common.AbstractShiroBaseTest;
 
 /**
  * Injected fields are mocks by Jukito<br>
@@ -33,12 +30,10 @@ import com.pampanet.sample.test.common.AbstractShiroUnitTest;
  *
  */
 @RunWith(JukitoRunner.class)
-public class SampleTest extends AbstractShiroUnitTest{
+public class SampleSyncWSTest extends AbstractShiroBaseTest {
 	
 	@Inject
 	SampleSecuredRESTWebService sampleService;
-	@Inject
-	Subject nonRootSubject;
 	
 	@Spy
 	SampleSecuredAsyncWS sampleAsyncWs;
@@ -64,46 +59,30 @@ public class SampleTest extends AbstractShiroUnitTest{
         //subjectUnderTest = new Subject.Builder(getSecurityManager()).principals(new SimplePrincipalCollection("lonestarr", IniSecurityManagerFactory.INI_REALM_NAME)).authenticated(true).buildSubject();
 		
 		//1.b (Unit Test) Mock the Subject:
-		when(nonRootSubject.getPrincipal()).thenReturn("lonestarr");
-		doThrow(AuthorizationException.class).when(nonRootSubject).checkPermission("forbiddenForAllExceptRoot");
+		when(_mockSubject.getPrincipal()).thenReturn("lonestarr");
+		doThrow(AuthorizationException.class).when(_mockSubject).checkPermission("forbiddenForAllExceptRoot");
 		//2. Bind the subject to the current thread:
-        setSubject(nonRootSubject);
 	}
 	
 	@Test
 	public void testShiroSample() throws Exception{
         
 		Response response = sampleService.sayHelloToUser();
-        
+        Response response1 = sampleService.forbiddenToAll();
         //THEN
         //Verify that getPrincipal() method was called under the mocked subject
-        verify(nonRootSubject).getPrincipal();
+        verify(_mockSubject, times(2)).getPrincipal();
         //assert the response had a 200 OK status
         Assert.assertTrue(response.getStatus() == 200);
+        Assert.assertTrue(response1.getStatus() == 200);
 	}
 	
-	@Test
-	public void testShiroAsyncSample(AsyncResponse asyncRes) throws Exception{
-		
-		SampleSecuredAsyncWS sampleAsyncWs = Mockito.spy(new SampleSecuredAsyncWS());
-		
-		//WHEN
-		sampleAsyncWs.sayHelloToUser(asyncRes);
-        
-		//THEN
-        //Verify that getPrincipal() method was called under the mocked subject
-        verify(nonRootSubject).getPrincipal();
-	}
+	
 	
 	@Test(expected=AuthorizationException.class)
 	public void shouldGiveUnauthorizedEx() throws Exception{
 		//Assert.assertTrue(subjectUnderTest.isPermitted("lightsaber:allowed"));
-		nonRootSubject.checkPermission("forbiddenForAllExceptRoot");
+		_mockSubject.checkPermission("forbiddenForAllExceptRoot");
 	}
 	
-	@After
-    public void tearDownSubject() {
-        //3. Unbind the subject from the current thread:
-        clearSubject();
-    }
 }
