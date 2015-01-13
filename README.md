@@ -1,5 +1,6 @@
 shiro-guice-async-webapp
 ========================
+[![Build Status](https://travis-ci.org/pabiagioli/shiro-guice-async-webapp.svg)](https://travis-ci.org/pabiagioli/shiro-guice-async-webapp)
 
 Sample Project for building RESTful Web Services using Apache Shiro 1.2.3, JBoss RestEasy 3 and Google Guice 3 with Asynchronous HTTP Request Processing support.
 
