@@ -54,8 +54,13 @@ Apache Shiro Users Configuration
 - Sample <code>shiro.ini</code> file in <code>src/main/resources</code>
 - To configure more Realms and Filters, refer to Shiro's Documentation https://shiro.apache.org/static/current/apidocs/org/apache/shiro/realm/Realm.html
 
+Current Code Coverage
+---------------------
+[![Coverage Status](https://coveralls.io/repos/pabiagioli/shiro-guice-async-webapp/badge.png)](https://coveralls.io/r/pabiagioli/shiro-guice-async-webapp)
+
 Next steps
 ----------
 - Servlet 4 Push API
 - Wiki
+- More Code Coverage
 - More stuff...
