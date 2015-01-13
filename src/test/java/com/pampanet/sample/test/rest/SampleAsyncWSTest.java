@@ -10,6 +10,7 @@ import javax.ws.rs.container.AsyncResponse;
 import org.apache.shiro.authz.AuthorizationException;
 import org.jukito.JukitoRunner;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
