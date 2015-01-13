@@ -37,6 +37,7 @@ public class SampleAsyncWSTest extends AbstractShiroBaseTest {
 		sampleAsyncWs = Mockito.spy(new SampleSecuredAsyncWS());
 	}
 	
+	@Ignore 
 	@Test
 	public void shouldGetPrincipalTwiceTest(AsyncResponse asyncRes) throws Exception{
 		
